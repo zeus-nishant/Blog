@@ -23,7 +23,9 @@ class BlogPostsController < ApplicationController
         end
     end
     def edit
+        
     end
+
     def update
         if @blog_post.update(blog_post_params)
             redirect_to @blog_post
