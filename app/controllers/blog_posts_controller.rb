@@ -1,4 +1,5 @@
 class BlogPostsController < ApplicationController
+    before_action :authenticate_user!, except: [:index, :show]
     before_action :set_blog_post, except: [:index, :new, :create]
 
     def index
@@ -16,7 +17,7 @@ class BlogPostsController < ApplicationController
     def create
         @blog_post=BlogPost.new(blog_post_params)
         if @blog_post.save
-            redirect_to @blog_post 
+            redirect_to @blog_post  
         else
             render :new, status: :unprocessable_entity
         end
