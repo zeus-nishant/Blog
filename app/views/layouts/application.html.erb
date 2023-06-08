@@ -23,6 +23,9 @@
         <%= link_to "Login", new_user_session_path %>
         <%= link_to "sign up", new_user_registration_path %>
       <% end %>
+
+      <%= render partial: 'shared/search_form', locals: { query: @query }  %>
+
     </div>
 
     <%= yield %>
