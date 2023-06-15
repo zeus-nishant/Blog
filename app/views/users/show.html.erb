@@ -1,0 +1,18 @@
+<h1>User Profile</h1>
+<p>Username: <%= @username %></p>
+<p>Email: <%= @user.email %></p>
+
+
+
+<% if @current_user == @user %>
+  <h2>Your Blog Posts</h2>
+  <% if @user.blog_posts.any? %>
+    <ul>
+      <% @user.blog_posts.each do |blog_post| %>
+        <li><%= link_to blog_post.title, blog_post_path(blog_post) %></li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No blog posts found.</p>
+  <% end %>
+<% end %>

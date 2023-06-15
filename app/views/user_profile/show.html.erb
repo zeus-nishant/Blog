@@ -3,16 +3,19 @@
   #<p>Find me in app/views/user_profile/show.html.erb</p>
 #</div>
 
-<div>
-  <h1 class="font-bold text-4xl"><%= @user.name %></h1>
-  <h2 class="text-2xl">Blogs</h2>
-  <% if @user.blogs.any? %>
-    <ul>
-      <% @user.blogs.each do |blog| %>
-        <li><%= link_to blog.title, blog_path(blog) %></li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>No blogs found.</p>
-  <% end %>
-</div>
+<h1>User Profile</h1>
+<p>Name: <%= @user.name %></p>
+<p>Email: <%= @user.email %></p>
+<p>Bio: <%= @user.bio %></p>
+<p>Location: <%= @user.location %></p>
+
+<h2>Blog Posts</h2>
+<% if @user.blog_posts.any? %>
+  <ul>
+    <% @user.blog_posts.each do |blog_post| %>
+      <li><%= link_to blog_post.title, blog_post_path(blog_post) %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No blog posts found.</p>
+<% end %>

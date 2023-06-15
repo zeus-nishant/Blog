@@ -6,7 +6,10 @@ class User < ApplicationRecord
 
          
        
-  validates :username, presence: true, uniqueness: true
+  validates :username, presence: true #uniqueness: true
+  validates_uniqueness_of :username
+
+  has_many :blog_posts, foreign_key: :user_id
 
   has_many :follows_as_follower, foreign_key: :follower_id, class_name: "Follow"
   has_many :followed_users, through: :follows_as_follower, source: :followed

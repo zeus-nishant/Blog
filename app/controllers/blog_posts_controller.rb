@@ -22,8 +22,9 @@ class BlogPostsController < ApplicationController
             render :new, status: :unprocessable_entity
         end
     end
+    
     def edit
-        
+
     end
 
     def update

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_08_072730) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_12_062016) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -19,6 +19,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_072730) do
     t.text "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_blog_posts_on_user_id"
   end
 
   create_table "followers", force: :cascade do |t|
@@ -50,6 +52,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_08_072730) do
     t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "blog_posts", "users"
   add_foreign_key "follows", "users", column: "followed_id"
   add_foreign_key "follows", "users", column: "follower_id"
 end
