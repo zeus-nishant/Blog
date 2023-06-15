@@ -1,11 +1,17 @@
 <h1>Search Results for <%= @query %></h1>
 
 <% if @users.any? %>
-  <ul>
-    <% @users.each do |user| %>
-      <li><%= link_to user.name, user %></li>
+  <% @users.each do |user| %>
+    <h2><%= user.username %></h2>
+    <% if user.blog_posts.any? %>
+      <% user.blog_posts.each do |blog_post| %>
+        <h3><%= blog_post.title %></h3>
+        <p><%= blog_post.body %></p>
+      <% end %>
+    <% else %>
+      <p>No blog posts found for this user.</p>
     <% end %>
-  </ul>
+  <% end %>
 <% else %>
   <p>No users found.</p>
 <% end %>
