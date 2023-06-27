@@ -9,24 +9,61 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+      /* Add custom styles for layout changes */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+      }
+
+      .navbar-left {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+
+      .navbar-right {
+        display: flex;
+        align-items: center;
+      }
+
+      .search-box {
+        text-align: center;
+      }
+    </style>
   </head>
 
-  <body class="prose mx-auto" style="background-image: url('<%= image_path('for_blog.jpeg') %>'); background-attachment: fixed;">
+  <body class="prose mx-auto" style="background-image: url('<%= image_path('beige-watercolour-mountains-wallpaper-mural-Plain.webp') %>'); background-attachment: fixed;">
     <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
-    <div>
-      <% if user_signed_in? %>
-      <%= link_to "Home", root_path %>
-      <%= link_to "New blog post", new_blog_post_path %>
-        <%= link_to "Profile", user_path(current_user) %>
-        <%= button_to "Log out", destroy_user_session_path, method: :delete %>
-      <% else %>
-        <%= link_to "Login", new_user_session_path %>
-        <%= link_to "sign up", new_user_registration_path %>
-      <% end %>
+    
+    <div class="navbar">
+      <div class="navbar-left">
+        <%= link_to "Home", root_path %>
+        <% if user_signed_in? && current_page?(user_path(current_user)) %>
+          <%= link_to "New blog post", new_blog_post_path %>
+        <% end %>
+      </div>
+      <div class="navbar-right">
+        <% if user_signed_in? %>
+          <% unless current_page?(user_path(current_user)) || current_page?(settings_path) %>
+            <%= link_to "Profile", user_path(current_user) %>
+          <% end %>
+          <% if current_page?(user_path(current_user)) %>
+            <%= link_to "Settings", settings_path, class: "settings-button" %>
+            
+          <% end %>
+        <% else %>
+          <%= link_to "Login", new_user_session_path %>
+          <%= link_to "Sign up", new_user_registration_path %>
+        <% end %>
+      </div>
+    </div>
 
+    <div class="search-box">
       <%= render partial: 'shared/search_form', locals: { query: @query }  %>
-
     </div>
 
     <%= yield %>

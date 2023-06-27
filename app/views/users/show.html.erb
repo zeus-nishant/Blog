@@ -1,14 +1,38 @@
 <h1>User Profile</h1>
-<p>Username: <%= @username %></p>
-<p>Email: <%= @user.email %></p>
 
+<% if @current_user.present? && @current_user == @user %>
+  <%= form_with(model: @user, local: true) do |form| %>
+    <div class="field">
+      <%= form.label :avatar %>
+      <%= form.file_field :avatar, id: 'avatar-input', onchange: 'previewImage(event)' %>
+    </div>
 
+    <div id="image-preview" class="avatar-preview"></div>
 
-<% if @current_user.present? && @current_user != @user %>
+    <%= form.submit "Upload Image", id: 'upload-button' %>
+  <% end %>
+<% end %>
+
+<div class="profile-info">
+  <% if @user.avatar.attached? %>
+    <%= image_tag @user.avatar.variant(resize: '100x100'), class: 'avatar' %>
+  <% end %>
+
+  <p>Username: <%= current_user.username %></p>
+  <p>Email: <%= @user.email %></p>
+
+  
+</div>
+
+<% if user_signed_in? && @current_user != @user %>
   <% if @current_user.following?(@user) %>
-    <%= button_to "Unfollow", unfollow_user_path(@user), method: :post %>
+    <%= form_tag follow_user_path(@user), method: :post do %>
+      <%= submit_tag "Unfollow" %>
+    <% end %>
   <% else %>
-    <%= button_to "Follow", follow_user_path(@user), method: :post %>
+    <%= form_tag follow_user_path(@user), method: :post do %>
+      <%= submit_tag "Follow" %>
+    <% end %>
   <% end %>
 <% end %>
 
@@ -21,3 +45,15 @@
 <% else %>
   <p>No blog posts found.</p>
 <% end %>
+
+<script>
+  function previewImage(event) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var output = document.getElementById('image-preview');
+      output.innerHTML = '<img src="' + reader.result + '" class="avatar-preview-image">';
+      document.getElementById('upload-button').value = "Change Image";
+    };
+    reader.readAsDataURL(event.target.files[0]);
+  }
+</script>

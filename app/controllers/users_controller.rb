@@ -1,5 +1,13 @@
 class UsersController < ApplicationController
 
+    def index
+        @users = User.all
+    end
+
+    def user_params
+        params.require(:user).permit(:avatar)
+    end
+
     def show
         @user = User.find(params[:id])
         @username = @user.username
@@ -12,21 +20,16 @@ class UsersController < ApplicationController
 
     def follow
         @user = User.find(params[:id])
-        current_user.follow(@user)
-        redirect_to user_profile_path(@user)
+        current_user.followed_users << @user
+        redirect_to user_path(@user)
       end
     
       def unfollow
         @user = User.find(params[:id])
-        current_user.unfollow(@user)
-        redirect_to user_profile_path(@user)
+        current_user.followed_users.delete(@user)
+        redirect_to user_path(@user)
       end
-    
 end
-    #def search
-       # @query = params[:query]
-        #@users = User.where("username LIKE ?", "%#{@query}%")
-   # end
     
     
 

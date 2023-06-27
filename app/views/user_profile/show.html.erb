@@ -9,9 +9,13 @@
 
 <% if @current_user.present? && @current_user != @user %>
   <% if @current_user.following?(@user) %>
-    <%= button_to "Unfollow", unfollow_user_path(@user), method: :post %>
+    <%= form_tag unfollow_user_path(@user), method: :post do %>
+      <%= submit_tag 'Unfollow' %>
+    <% end %>
   <% else %>
-    <%= button_to "Follow", follow_user_path(@user), method: :post %>
+    <%= form_tag follow_user_path(@user), method: :post do %>
+      <%= submit_tag 'Follow' %>
+    <% end %>
   <% end %>
 <% end %>
 

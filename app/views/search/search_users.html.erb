@@ -11,6 +11,11 @@
     <% else %>
       <p>No blog posts found for this user.</p>
     <% end %>
+
+    <% if user_signed_in? %>
+      <%= button_to "Follow", follow_user_path(user), method: :post %>
+    <% end %>
+
   <% end %>
 <% else %>
   <p>No users found.</p>

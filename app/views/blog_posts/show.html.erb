@@ -1,3 +1,25 @@
 <%= link_to "Edit", edit_blog_post_path(@blog_post) if user_signed_in? %>
 <h1><%= @blog_post.title %></h1>
 <%= @blog_post.body %>
+
+<h2>Comments</h2>
+
+<% @blog_post.comments.each do |comment| %>
+    <div>
+      <p><strong><%= comment.user.username %>:</strong> <%= comment.body %></p>
+      <% comment.replies.each do |reply| %>
+        <div style="margin-left: 20px;">
+          <p><strong><%= reply.user.username %>:</strong> <%= reply.body %></p>
+        </div>
+      <% end %>
+      <%= form_with(model: [@blog_post, comment.replies.build], url: blog_post_comment_reply_path(@blog_post, comment), local: true) do |f| %>
+        <%= f.text_area :body %>
+        <%= f.submit "Reply" %>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <%= form_with(model: [@blog_post, @blog_post.comments.build], url: blog_post_comments_path(@blog_post), local: true) do |f| %>
+    <%= f.text_area :body %>
+    <%= f.submit "Add Comment" %>
+  <% end %>

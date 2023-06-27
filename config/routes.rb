@@ -4,12 +4,16 @@ Rails.application.routes.draw do
   
   devise_for :users, controllers: { registrations: 'users/registrations' }
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :blog_posts
+  resources :blog_posts do
+    resources :comments, only: [:create] do
+      post 'reply', on: :member
+    end
+  end
 
   resources :users, only: [:show, :index] do
     member do
-      post :follow # Add the follow action route
-      post :unfollow # Add the follow action route
+      post 'follow', to: 'users#follow', as: 'follow'
+      post 'unfollow', to: 'users#unfollow', as: 'unfollow'
     end
     
 
@@ -20,7 +24,8 @@ Rails.application.routes.draw do
   get '/search/users', to: 'search#search_users', as: 'search_users'
 
 
-  
+  get '/settings', to: 'settings#index', as: 'settings'
+
 
   
 
